@@ -9,7 +9,8 @@ describe("Testing native BigInt support: parse", function () {
     console.log('No native BigInt');
     return;
   }
-  var input = '{"big":92233720368547758070,"small":123}';
+  var input = '{"big":92233720368547758070,"small":123,"decimal":9223372.0368547758070}';
+  var inputRoundtrip = '{"big":92233720368547758070,"small":123}';
 
   it("Should show JSONbig does support parsing native BigInt", function (done) {
     var JSONbig = require('../index')({
@@ -19,6 +20,8 @@ describe("Testing native BigInt support: parse", function () {
     expect(obj.small, "small int").to.equal(123);
     expect(obj.big.toString(), "big int").to.equal("92233720368547758070");
     expect(typeof obj.big, "big int").to.equal('bigint');
+    expect(obj.decimal.toString(), "decimal").to.equal("9223372.036854776");
+    expect(typeof obj.decimal, "decimal").to.equal('number');
     done();
   });
 
@@ -32,6 +35,8 @@ describe("Testing native BigInt support: parse", function () {
     expect(typeof obj.big, "big int").to.equal('bigint');
     expect(obj.small.toString(), "small int").to.equal("123");
     expect(typeof obj.small, "small int").to.equal('bigint');
+    expect(obj.decimal.toString(), "decimal").to.equal("9223372.036854776");
+    expect(typeof obj.decimal, "decimal").to.equal('number');
     done();
   });
 
@@ -40,9 +45,9 @@ describe("Testing native BigInt support: parse", function () {
     var JSONbig = require('../index')({
       "useNativeBigInt": true
     });
-    var obj = JSONbig.parse(input);
+    var obj = JSONbig.parse(inputRoundtrip);
     var output = JSONbig.stringify(obj);
-    expect(output).to.equal(input);
+    expect(output).to.equal(inputRoundtrip);
     done();
   });
 
@@ -51,9 +56,9 @@ describe("Testing native BigInt support: parse", function () {
       "alwaysParseAsBig": true,
       "useNativeBigInt": true
     });
-    var obj = JSONbig.parse(input);
+    var obj = JSONbig.parse(inputRoundtrip);
     var output = JSONbig.stringify(obj);
-    expect(output).to.equal(input);
+    expect(output).to.equal(inputRoundtrip);
     done();
   });
 });
